@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:torch_mobile/torch_mobile.dart';
-import 'package:torch_mobile/model.dart';
-import 'package:torch_mobile/enums/dtype.dart';
+import 'package:pytorch_mobile/pytorch_mobile.dart';
+import 'package:pytorch_mobile/model.dart';
+import 'package:pytorch_mobile/enums/dtype.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,7 +17,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Model _imageModel, _customModel;
-  
+
   String _imagePrediction;
   List _prediction;
   File _image;
@@ -27,14 +27,13 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     //load your model
     try {
-      TorchMobile.loadModel("assets/models/resnet.pt")
+      PyTorchMobile.loadModel("assets/models/resnet.pt")
           .then((model) => _imageModel = model);
-      TorchMobile.loadModel("assets/models/custom_model.pt")
+      PyTorchMobile.loadModel("assets/models/custom_model.pt")
           .then((model) => _customModel = model);
     } on PlatformException {
       print("only supported for android so far");
     }
-
   }
 
   //run an image model
@@ -46,13 +45,13 @@ class _MyAppState extends State<MyApp> {
     //labels are 1000 random english words for show purposes
     _imagePrediction = await _imageModel.getImagePrediction(
         image, 224, 224, "assets/labels/labels.csv");
-    
+
     setState(() {
       _image = image;
     });
   }
-  
-  //run a custom made model with number inputs
+
+  //run a custom model with number inputs
   Future runCustomModel() async {
     _prediction = await _customModel
         .getPrediction([1, 2, 3, 4], [1, 2, 2], DType.float32);
@@ -96,7 +95,9 @@ class _MyAppState extends State<MyApp> {
             Center(
               child: Visibility(
                 visible: _prediction != null,
-                child: Text("${_prediction[0]}"),
+                child: Text(_prediction != null
+                    ? "${_prediction[0]}"
+                    : ""),
               ),
             )
           ],

@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/torch_mobile.iml" filepath="$PROJECT_DIR$/torch_mobile.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/torch_mobile_android.iml" filepath="$PROJECT_DIR$/android/torch_mobile_android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/example/android/torch_mobile_example_android.iml" filepath="$PROJECT_DIR$/example/android/torch_mobile_example_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pytorch_mobile.iml" filepath="$PROJECT_DIR$/pytorch_mobile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/pytorch_mobile_android.iml" filepath="$PROJECT_DIR$/android/pytorch_mobile_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/example/android/pytorch_mobile_example_android.iml" filepath="$PROJECT_DIR$/example/android/pytorch_mobile_example_android.iml" />
     </modules>
   </component>
 </project>

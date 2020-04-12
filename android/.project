@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>torch_mobile</name>
-	<comment>Project torch_mobile created by Buildship.</comment>
+	<name>pytorch_mobile</name>
+	<comment>Project pytorch_mobile created by Buildship.</comment>
 	<projects>
 	</projects>
 	<buildSpec>

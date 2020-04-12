@@ -1,10 +1,10 @@
 import Flutter
 import UIKit
 
-public class SwiftTorchMobilePlugin: NSObject, FlutterPlugin {
+public class SwiftPyTorchMobilePlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "torch_mobile", binaryMessenger: registrar.messenger())
-    let instance = SwiftTorchMobilePlugin()
+    let channel = FlutterMethodChannel(name: "pytorch_mobile", binaryMessenger: registrar.messenger())
+    let instance = SwiftPyTorchMobilePlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 

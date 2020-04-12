@@ -1,6 +1,6 @@
-# torch_mobile_example
+# pytorch_mobile_example
 
-Demonstrates how to use the torch_mobile plugin.
+Demonstrates how to use the pytorch_mobile plugin.
 
 ## Getting Started
 

@@ -1,4 +1,4 @@
-group 'io.fynn.torch_mobile'
+group 'io.fynn.pytorch_mobile'
 version '1.0'
 
 buildscript {

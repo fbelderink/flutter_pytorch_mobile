@@ -1,4 +1,4 @@
-package io.fynn.torch_mobile;
+package io.fynn.pytorch_mobile;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,20 +24,20 @@ import java.util.HashMap;
 import java.util.List;
 
 /** TorchMobilePlugin */
-public class TorchMobilePlugin<T> implements FlutterPlugin, MethodCallHandler {
+public class PyTorchMobilePlugin implements FlutterPlugin, MethodCallHandler {
 
   ArrayList<Module> modules = new ArrayList<>();
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
     final MethodChannel channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(),
-        "torch_mobile");
-    channel.setMethodCallHandler(new TorchMobilePlugin());
+        "pytorch_mobile");
+    channel.setMethodCallHandler(new PyTorchMobilePlugin());
   }
 
   public static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "torch_mobile");
-    channel.setMethodCallHandler(new TorchMobilePlugin());
+    final MethodChannel channel = new MethodChannel(registrar.messenger(), "pytorch_mobile");
+    channel.setMethodCallHandler(new PyTorchMobilePlugin());
   }
 
   @Override
@@ -50,7 +50,7 @@ public class TorchMobilePlugin<T> implements FlutterPlugin, MethodCallHandler {
           result.success(modules.size() - 1);
         } catch (Exception e) {
           String assetPath = call.argument("assetPath");
-          Log.e("TorchMobile", assetPath + " is not a proper model", e);
+          Log.e("PyTorchMobile", assetPath + " is not a proper model", e);
         }
         break;
       case "predict":
@@ -72,7 +72,7 @@ public class TorchMobilePlugin<T> implements FlutterPlugin, MethodCallHandler {
           data = dataList.toArray(new Double[dataList.size()]);
 
         }catch(Exception e){
-          Log.e("TorchMobile", "error parsing arguments", e);
+          Log.e("PyTorchMobile", "error parsing arguments", e);
         }
 
         //prepare input tensor
@@ -83,7 +83,7 @@ public class TorchMobilePlugin<T> implements FlutterPlugin, MethodCallHandler {
         try {
           outputTensor = module.forward(IValue.from(inputTensor)).toTensor();
         }catch(RuntimeException e){
-          Log.e("TorchMobile", "Your input type " + dtype.toString().toLowerCase()  + " (" + Convert.dtypeAsPrimitive(dtype.toString()) +") " + "does not match with model input type",e);
+          Log.e("PyTorchMobile", "Your input type " + dtype.toString().toLowerCase()  + " (" + Convert.dtypeAsPrimitive(dtype.toString()) +") " + "does not match with model input type",e);
           result.success(null);
         }
 
@@ -106,7 +106,7 @@ public class TorchMobilePlugin<T> implements FlutterPlugin, MethodCallHandler {
           bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
 
         }catch (Exception e){
-          Log.e("TorchMobile", "error reading image", e);
+          Log.e("PyTorchMobile", "error reading image", e);
         }
 
         final Tensor imageInputTensor = TensorImageUtils.bitmapToFloat32Tensor(bitmap,

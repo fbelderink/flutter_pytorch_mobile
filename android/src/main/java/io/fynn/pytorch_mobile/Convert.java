@@ -1,4 +1,4 @@
-package io.fynn.torch_mobile;
+package io.fynn.pytorch_mobile;
 
 public class Convert {
 

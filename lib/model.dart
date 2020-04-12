@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:torch_mobile/enums/dtype.dart';
+import 'package:pytorch_mobile/enums/dtype.dart';
 
 class Model {
-  static const MethodChannel _channel = const MethodChannel('torch_mobile');
+  static const MethodChannel _channel = const MethodChannel('pytorch_mobile');
 
   final int _index;
 

@@ -1,5 +1,5 @@
-name: torch_mobile_example
-description: Demonstrates how to use the torch_mobile plugin.
+name: pytorch_mobile_example
+description: Demonstrates how to use the pytorch_mobile plugin.
 publish_to: 'none'
 
 environment:
@@ -18,7 +18,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  torch_mobile:
+  pytorch_mobile:
     path: ../
 
 # For information on the generic Dart part of this file, see the

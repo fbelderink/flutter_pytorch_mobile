@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:torch_mobile/model.dart';
+import 'package:pytorch_mobile/model.dart';
 
-class TorchMobile {
-  static const MethodChannel _channel = const MethodChannel('torch_mobile');
+class PyTorchMobile {
+  static const MethodChannel _channel = const MethodChannel('pytorch_mobile');
 
   static Future<Model> loadModel(String path) async {
     String absPath = await _getAbsolutePath(path);

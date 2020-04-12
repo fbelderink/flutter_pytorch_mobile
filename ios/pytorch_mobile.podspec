@@ -1,9 +1,9 @@
 #
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint torch_mobile.podspec' to validate before publishing.
+# Run `pod lib lint pytorch_mobile.podspec' to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'torch_mobile'
+  s.name             = 'pytorch_mobile'
   s.version          = '0.0.1'
   s.summary          = 'A new flutter plugin project.'
   s.description      = <<-DESC

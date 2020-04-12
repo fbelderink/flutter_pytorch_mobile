@@ -9,7 +9,7 @@ import 'package:torch_mobile/model.dart';
 class TorchMobile {
   static const MethodChannel _channel = const MethodChannel('torch_mobile');
 
-  static Future<Model> getModel(String path) async {
+  static Future<Model> loadModel(String path) async {
     String absPath = await _getAbsolutePath(path);
     int index = await _channel
         .invokeMethod("loadModel", {"absPath": absPath, "assetPath": path});
@@ -20,15 +20,18 @@ class TorchMobile {
     Directory dir = await getApplicationDocumentsDirectory();
     String dirPath = join(dir.path, path);
     ByteData data = await rootBundle.load(path);
-    //Copy asset to documents directory
+    //copy asset to documents directory
     List<int> bytes =
         data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 
-    //create directory
+    //create non existant directories
     List split = path.split("/");
+    String nextDir = "";
     for (int i = 0; i < split.length; i++) {
       if (i != split.length - 1) {
-        await Directory(join(dir.path, split[i])).create();
+        nextDir += split[i];
+        await Directory(join(dir.path, nextDir)).create();
+        nextDir += "/";
       }
     }
     await File(dirPath).writeAsBytes(bytes);

@@ -16,7 +16,7 @@ class PyTorchMobile {
         .invokeMethod("loadModel", {"absPath": absPath, "assetPath": path});
     return Model(index);
   }
-  
+
   static Future<String> _getAbsolutePath(String path) async {
     Directory dir = await getApplicationDocumentsDirectory();
     String dirPath = join(dir.path, path);

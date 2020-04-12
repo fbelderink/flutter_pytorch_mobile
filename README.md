@@ -43,7 +43,7 @@ Model imageModel = await PyTorchMobile.loadModel(model: 'assets/models/resnet18.
 List prediction = await customModel.getPrediction([1, 2, 3, 4], [1, 2, 2], DType.float32);
 ```
 
-### Get prediction for image
+### Get prediction for an image
 
 ```dart
 String prediction = await _imageModel.getImagePrediction(image, 224, 224, "assets/labels/labels.csv");

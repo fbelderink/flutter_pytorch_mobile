@@ -48,3 +48,6 @@ List prediction = await customModel.getPrediction([1, 2, 3, 4], [1, 2, 2], DType
 ```dart
 String prediction = await _imageModel.getImagePrediction(image, 224, 224, "assets/labels/labels.csv");
 ```
+
+## Contact
+(fynnmaarten.business@gmail.com)

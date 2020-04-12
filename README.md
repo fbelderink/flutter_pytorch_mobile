@@ -30,23 +30,27 @@ import 'package:pytorch_mobile/pytorch_mobile.dart';
 
 Either custom model:
 ```dart
-Model customModel = await PyTorchMobile.loadModel(model: 'assets/models/custom_model.pt');
+Model customModel = await PyTorchMobile
+        .loadModel(model: 'assets/models/custom_model.pt');
 ```
 Or image model:
 ```dart
-Model imageModel = await PyTorchMobile.loadModel(model: 'assets/models/resnet18.pt');
+Model imageModel = await PyTorchMobile
+        .loadModel(model: 'assets/models/resnet18.pt');
 ```
 
 ### Get custom prediction
 
 ```dart
-List prediction = await customModel.getPrediction([1, 2, 3, 4], [1, 2, 2], DType.float32);
+List prediction = await customModel
+        .getPrediction([1, 2, 3, 4], [1, 2, 2], DType.float32);
 ```
 
 ### Get prediction for an image
 
 ```dart
-String prediction = await _imageModel.getImagePrediction(image, 224, 224, "assets/labels/labels.csv");
+String prediction = await _imageModel
+        .getImagePrediction(image, 224, 224, "assets/labels/labels.csv");
 ```
 
 ## Contact

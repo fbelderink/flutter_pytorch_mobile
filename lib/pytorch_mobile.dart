@@ -9,13 +9,14 @@ import 'package:pytorch_mobile/model.dart';
 class PyTorchMobile {
   static const MethodChannel _channel = const MethodChannel('pytorch_mobile');
 
+  ///Sets pytorch model path and returns Model
   static Future<Model> loadModel(String path) async {
     String absPath = await _getAbsolutePath(path);
     int index = await _channel
         .invokeMethod("loadModel", {"absPath": absPath, "assetPath": path});
     return Model(index);
   }
-
+  
   static Future<String> _getAbsolutePath(String path) async {
     Directory dir = await getApplicationDocumentsDirectory();
     String dirPath = join(dir.path, path);

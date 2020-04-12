@@ -12,11 +12,11 @@ To use this plugin, add `pytorch_mobile` as a [dependency in your pubspec.yaml f
 
 Create a `assets` folder with your pytorch model and labels if needed. Modify `pubspec.yaml` accoringly.
 
-    ```yaml
-    assets:
-     - assets/models/model.pt
-     - assets/labels.csv
-    ```
+```yaml
+assets:
+ - assets/models/model.pt
+ - assets/labels.csv
+```
 
 Run `flutter pub get`
 

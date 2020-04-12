@@ -50,4 +50,4 @@ String prediction = await _imageModel.getImagePrediction(image, 224, 224, "asset
 ```
 
 ## Contact
-(fynnmaarten.business@gmail.com)
+fynnmaarten.business@gmail.com

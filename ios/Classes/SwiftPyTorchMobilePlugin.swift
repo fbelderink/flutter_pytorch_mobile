@@ -2,6 +2,7 @@ import Flutter
 import UIKit
 
 public class SwiftPyTorchMobilePlugin: NSObject, FlutterPlugin {
+  let models = []
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "pytorch_mobile", binaryMessenger: registrar.messenger())
     let instance = SwiftPyTorchMobilePlugin()
@@ -9,6 +10,16 @@ public class SwiftPyTorchMobilePlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    result("iOS " + UIDevice.current.systemVersion)
+    switch call.method {
+    case "loadModule":
+      do {
+        let args = call.arguments
+        models.append(TorchModule(path: args[0]))
+      } catch {
+        print(call.arguments[1] + "is not a proper model!")
+      }
+    default:
+      result(FlutterMethodNotImplemented)
+    }
   }
 }

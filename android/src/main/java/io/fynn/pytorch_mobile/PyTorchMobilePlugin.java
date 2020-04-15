@@ -19,9 +19,6 @@ import org.pytorch.Tensor;
 import org.pytorch.torchvision.TensorImageUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 /** TorchMobilePlugin */
 public class PyTorchMobilePlugin implements FlutterPlugin, MethodCallHandler {

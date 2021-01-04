@@ -31,12 +31,12 @@ import 'package:pytorch_mobile/pytorch_mobile.dart';
 Either custom model:
 ```dart
 Model customModel = await PyTorchMobile
-        .loadModel(model: 'assets/models/custom_model.pt');
+        .loadModel('assets/models/custom_model.pt');
 ```
 Or image model:
 ```dart
 Model imageModel = await PyTorchMobile
-        .loadModel(model: 'assets/models/resnet18.pt');
+        .loadModel('assets/models/resnet18.pt');
 ```
 
 ### Get custom prediction

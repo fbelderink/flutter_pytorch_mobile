@@ -25,12 +25,16 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    //load your model
+    loadModel();
+  }
+
+  //load your model
+  Future loadModel() async {
+    String pathImageModel = "assets/models/resnet.pt";
+    String pathCustomModel = "assets/models/custom_model.pt";
     try {
-      PyTorchMobile.loadModel("assets/models/resnet.pt")
-          .then((model) => _imageModel = model);
-      PyTorchMobile.loadModel("assets/models/custom_model.pt")
-          .then((model) => _customModel = model);
+      _imageModel = await PyTorchMobile.loadModel(pathImageModel);
+      _customModel = await PyTorchMobile.loadModel(pathCustomModel);
     } on PlatformException {
       print("only supported for android so far");
     }
@@ -95,9 +99,7 @@ class _MyAppState extends State<MyApp> {
             Center(
               child: Visibility(
                 visible: _prediction != null,
-                child: Text(_prediction != null
-                    ? "${_prediction[0]}"
-                    : ""),
+                child: Text(_prediction != null ? "${_prediction[0]}" : ""),
               ),
             )
           ],

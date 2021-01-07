@@ -1,4 +1,4 @@
 #import <Flutter/Flutter.h>
 
-@interface PyTorchMobilePlugin : NSObject<FlutterPlugin>
+@interface PytorchMobilePlugin : NSObject<FlutterPlugin>
 @end

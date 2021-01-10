@@ -47,7 +47,7 @@ class Model {
   ///predicts image but returns the raw net output
   Future<List> getImagePredictionList(File image, int width, int height) async {
     final List prediction = await _channel.invokeListMethod("predictImage",
-        {"index": _index, "image": image, "width": width, "height": height});
+        {"index": _index, "image": image.readAsBytesSync(), "width": width, "height": height});
     return prediction;
   }
 

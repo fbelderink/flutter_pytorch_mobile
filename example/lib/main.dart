@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
   Future runImageModel() async {
     //pick a random image
     File image = await ImagePicker.pickImage(
-        source: ImageSource.camera, maxHeight: 224, maxWidth: 224);
+        source: ImageSource.gallery, maxHeight: 224, maxWidth: 224);
     //get prediction
     //labels are 1000 random english words for show purposes
     _imagePrediction = await _imageModel.getImagePrediction(

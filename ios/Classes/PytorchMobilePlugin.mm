@@ -64,23 +64,30 @@ NSMutableArray *modules = [[NSMutableArray alloc] init];
         case 2:
         {
             TorchModule *imageModule;
-            FlutterStandardTypedData *imageData;
+            NSArray<NSNumber*>* input;
             int width;
             int height;
             try {
                 int index = [call.arguments[@"index"] intValue];
                 imageModule = modules[index];
-                imageData = call.arguments[@"image"];
+                
+                FlutterStandardTypedData *imageData = call.arguments[@"image"];
                 width = [call.arguments[@"width"] intValue];
                 height = [call.arguments[@"height"] intValue];
                  
                 UIImage *image = [UIImage imageWithData: imageData.data];
                 image = [UIImageExtension resize:image toWidth:244 toHeight:244];
                 
-                result(nil);
-            
+                input = [UIImageExtension normalize:image];
             } catch (const std::exception& e) {
                 NSLog(@"PyTorchMobile: error reading image!\n%s", e.what());
+            }
+            try {
+                NSArray<NSNumber*>* output = [imageModule predictImage:&input withWidth:width andHeight:height];
+                
+                result(output);
+            } catch (const std::exception& e) {
+                NSLog(@"PyTorchMobile: %s", e.what());
             }
           
             break;

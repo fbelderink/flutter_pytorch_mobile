@@ -24,4 +24,4 @@ flutter:
         package: io.fynn.pytorch_mobile
         pluginClass: PyTorchMobilePlugin
       ios:
-        pluginClass: PyTorchMobilePlugin
+        pluginClass: PytorchMobilePlugin

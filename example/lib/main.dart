@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
       _imageModel = await PyTorchMobile.loadModel(pathImageModel);
       _customModel = await PyTorchMobile.loadModel(pathCustomModel);
     } on PlatformException {
-      print("only supported for android so far");
+      print("only supported for android and ios so far");
     }
   }
 
@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
   Future runImageModel() async {
     //pick a random image
     File image = await ImagePicker.pickImage(
-        source: ImageSource.gallery, maxHeight: 224, maxWidth: 224);
+        source: (Platform.isIOS ? ImageSource.gallery : ImageSource.camera), maxHeight: 224, maxWidth: 224);
     //get prediction
     //labels are 1000 random english words for show purposes
     _imagePrediction = await _imageModel.getImagePrediction(

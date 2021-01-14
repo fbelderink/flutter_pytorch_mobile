@@ -25,7 +25,6 @@ NSMutableArray *modules = [[NSMutableArray alloc] init];
                 NSString *absPath = call.arguments[@"absPath"];
                 TorchModule *module = [[TorchModule alloc]initWithFileAtPath: absPath];
                 [modules addObject: module];
-                NSLog(@"%@", absPath);
                 result(@([modules count] - 1));
             } catch (const std::exception& e){
                 NSString *assetPath = call.arguments[@"assetPath"];
@@ -52,7 +51,12 @@ NSMutableArray *modules = [[NSMutableArray alloc] init];
             }
             
             try {
-                NSArray<NSNumber*>* output = [module predict:&data withShape:shape andDtype:dtype];
+                int len = (int) [data count];
+                float input[len];
+                for(int i = 0; i < len; i++) {
+                    input[i] = [ data[i] floatValue];
+                }
+                NSArray<NSNumber*>* output = [module predict:&input withShape:shape andDtype:dtype];
                 result(output);
             } catch (const std::exception& e) {
                 NSLog(@"PyTorchMobile: %s", e.what());

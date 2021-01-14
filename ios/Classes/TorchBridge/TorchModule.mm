@@ -1,5 +1,4 @@
 #import "TorchModule.h"
-//#import "../Helpers/Convert.mm"
 #import <LibTorch/LibTorch.h>
 
 @class Convert;
@@ -25,7 +24,7 @@
 
 - (NSArray<NSNumber*>*)predictImage:(void*)imageBuffer withWidth:(int)width andHeight:(int)height {
     try {
-        at::Tensor tensor = torch::from_blob(imageBuffer, {1, 3, 244, 244}, torch::kFloat64);
+        at::Tensor tensor = torch::from_blob(imageBuffer, {1, 3, height, width}, at::kFloat);
         torch::autograd::AutoGradMode guard(false);
         at::AutoNonVariableTypeMode non_var_type_mode(true);
         
@@ -36,9 +35,14 @@
             return nil;
         }
         
-        NSMutableArray *results = [[NSMutableArray alloc] init];
-        for (int i = 0; i < (sizeof floatBuffer); i++) {
-            [results addObject:@(floatBuffer[i])];   
+        int prod = 1;
+        for(int i = 0; i < outputTensor.sizes().size(); i++) {
+            prod *= outputTensor.sizes().data()[i];  
+        }
+        
+        NSMutableArray<NSNumber*>* results = [[NSMutableArray<NSNumber*> alloc] init];
+        for (int i = 0; i < prod; i++) {
+            [results addObject: @(floatBuffer[i])];   
         }
         
         return [results copy];
@@ -59,15 +63,20 @@
     torch::autograd::AutoGradMode guard(false);
 	at::AutoNonVariableTypeMode non_var_type_mode(true);    
 	
-    at::Tensor output =  _module.forward({tensor}).toTensor();
-	
-    float* floatBuffer = output.data_ptr<float>();
+    at::Tensor outputTensor =  _module.forward({tensor}).toTensor();
+    
+    float* floatBuffer = outputTensor.data_ptr<float>();
 	if(!floatBuffer){
 		return nil;
 	}
+    
+    int prod = 1;
+    for(int i = 0; i < outputTensor.sizes().size(); i++) {
+        prod *= outputTensor.sizes().data()[i];  
+    }
 	
     NSMutableArray *results = [[NSMutableArray alloc] init];
-	for(int i = 0; i < sizeof(results); i++){
+	for(int i = 0; i < prod; i++){
 		[results addObject:@(floatBuffer[i])];
 	}
     

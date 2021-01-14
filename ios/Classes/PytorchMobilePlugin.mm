@@ -1,7 +1,7 @@
-#import "PytorchMobilePlugin.h"
-#import <LibTorch/LibTorch.h>
+#import "PyTorchMobilePlugin.h"
 #import "TorchModule.h"
 #import "UIImageExtension.h"
+#import <LibTorch/LibTorch.h>
 
 @implementation PytorchMobilePlugin
 
@@ -64,7 +64,7 @@ NSMutableArray *modules = [[NSMutableArray alloc] init];
         case 2:
         {
             TorchModule *imageModule;
-            NSArray<NSNumber*>* input;
+            float* input;
             int width;
             int height;
             try {
@@ -79,11 +79,12 @@ NSMutableArray *modules = [[NSMutableArray alloc] init];
                 image = [UIImageExtension resize:image toWidth:244 toHeight:244];
                 
                 input = [UIImageExtension normalize:image];
+                NSLog(@"%f", input[0]);
             } catch (const std::exception& e) {
                 NSLog(@"PyTorchMobile: error reading image!\n%s", e.what());
             }
             try {
-                NSArray<NSNumber*>* output = [imageModule predictImage:&input withWidth:width andHeight:height];
+                NSArray<NSNumber*>* output  = [imageModule predictImage:input withWidth:width andHeight: height];
                 
                 result(output);
             } catch (const std::exception& e) {

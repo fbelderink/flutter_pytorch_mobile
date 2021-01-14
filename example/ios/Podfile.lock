@@ -2,16 +2,16 @@ PODS:
   - Flutter (1.0.0)
   - image_picker (0.0.1):
     - Flutter
-  - LibTorch (1.7.1):
-    - LibTorch/Core (= 1.7.1)
-  - LibTorch/Core (1.7.1):
+  - LibTorch (1.6.1):
+    - LibTorch/Core (= 1.6.1)
+  - LibTorch/Core (1.6.1):
     - LibTorch/Torch
-  - LibTorch/Torch (1.7.1)
+  - LibTorch/Torch (1.6.1)
   - path_provider (0.0.1):
     - Flutter
   - pytorch_mobile (0.0.1):
     - Flutter
-    - LibTorch
+    - LibTorch (~> 1.6.0)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
@@ -36,9 +36,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   image_picker: e3eacd46b94694dde7cf2705955cece853aa1a8f
-  LibTorch: cef57cf03fbb7fcc798b9f59dde4302c47d3c50b
+  LibTorch: 32a83630ab5b4505f205c7e332975a2d3d6e0c55
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
-  pytorch_mobile: 2681706a6a4c28a60d42b24676486ea200f27678
+  pytorch_mobile: 22fd3005ff24695fbea6d0aa79f0a2a8edfb5152
 
 PODFILE CHECKSUM: cf0c950f7e9a456b4e325f5b8fc0f98906a3705a
 

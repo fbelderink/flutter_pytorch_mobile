@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:pytorch_mobile/pytorch_mobile.dart';
 import 'package:pytorch_mobile/model.dart';
@@ -43,6 +44,10 @@ class _MyAppState extends State<MyApp> {
   //run an image model
   Future runImageModel() async {
     //pick a random image
+    /*var bytes = await rootBundle.load("assets/kitten.jpeg");
+    String tempPath = (await getTemporaryDirectory()).path;
+    File image = File('$tempPath/kitten.jpeg');
+    await image.writeAsBytes(bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));*/
     File image = await ImagePicker.pickImage(
         source: (Platform.isIOS ? ImageSource.gallery : ImageSource.camera), maxHeight: 224, maxWidth: 224);
     //get prediction

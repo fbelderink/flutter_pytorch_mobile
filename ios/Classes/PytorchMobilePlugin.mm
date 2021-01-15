@@ -78,12 +78,11 @@ NSMutableArray *modules = [[NSMutableArray alloc] init];
                 FlutterStandardTypedData *imageData = call.arguments[@"image"];
                 width = [call.arguments[@"width"] intValue];
                 height = [call.arguments[@"height"] intValue];
-                 
+                
                 UIImage *image = [UIImage imageWithData: imageData.data];
-                image = [UIImageExtension resize:image toWidth:244 toHeight:244];
+                image = [UIImageExtension resize:image toWidth:width toHeight:height];
                 
                 input = [UIImageExtension normalize:image];
-                NSLog(@"%f", input[0]);
             } catch (const std::exception& e) {
                 NSLog(@"PyTorchMobile: error reading image!\n%s", e.what());
             }

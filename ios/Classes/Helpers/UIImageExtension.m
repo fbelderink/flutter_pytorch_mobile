@@ -3,13 +3,12 @@
 @implementation UIImageExtension
 
 + (UIImage*)resize:(UIImage*)image toWidth:(int) width toHeight:(int)height {
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(width, height), NO, 1.0);
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(width, height),NO,1);
     
     [image drawInRect:CGRectMake(0,0,width,height)];
 	
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
-    NSLog(@"resize");
 	return newImage;
 }
 
@@ -38,9 +37,9 @@
 	
     float* normalizedBuffer = malloc(3*h*w * sizeof(float));
     for(int i = 0; i < (w*h); i++) {
-        normalizedBuffer[i] = (((float)rawBytes[i * 4 + 0]) / 255.0 - 0.456) / 0.224;
-        normalizedBuffer[w * h + i] = (((float)rawBytes[i * 4 + 1]) / 255.0 - 0.456) / 0.224;
-        normalizedBuffer[w * h * 2 + i] = (((float)rawBytes[i * 4 + 2]) / 255.0 - 0.406) / 0.225;	
+        normalizedBuffer[i] = (rawBytes[i * 4 + 0] / 255.0 - 0.485) / 0.229;
+        normalizedBuffer[w * h + i] = (rawBytes[i * 4 + 1] / 255.0 - 0.456) / 0.224;
+        normalizedBuffer[w * h * 2 + i] = (rawBytes[i * 4 + 2] / 255.0 - 0.406) / 0.225;	
     }
     
     return normalizedBuffer;

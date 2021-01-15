@@ -13,3 +13,7 @@
 ## 0.0.4
 
 * Changed README and example
+
+## 0.1.0
+
+* iOS compability and bugfixes

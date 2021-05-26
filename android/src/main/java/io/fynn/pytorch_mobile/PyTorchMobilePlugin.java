@@ -145,7 +145,7 @@ public class PyTorchMobilePlugin implements FlutterPlugin, MethodCallHandler {
       case FLOAT32:
         return Tensor.fromBlob(Convert.toFloatPrimitives(data), Convert.toPrimitives(shape));
       case FLOAT64:
-        return  Tensor.fromBlob(Convert.toDoublePrimitives(data), Convert.toDoublePrimitives(shape));
+        return  Tensor.fromBlob(Convert.toDoublePrimitives(data), Convert.toPrimitives(shape));
       case INT32:
         return Tensor.fromBlob(Convert.toIntegerPrimitives(data), Convert.toPrimitives(shape));
       case INT64:

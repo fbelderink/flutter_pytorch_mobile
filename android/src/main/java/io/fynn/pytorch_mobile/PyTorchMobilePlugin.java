@@ -102,6 +102,8 @@ public class PyTorchMobilePlugin implements FlutterPlugin, MethodCallHandler {
       case "predictImage":
         Module imageModule = null;
         Bitmap bitmap = null;
+        float [] mean = null;
+        float [] std = null;
         try {
           int index = call.argument("index");
           byte[] imageData = call.argument("image");
@@ -109,11 +111,11 @@ public class PyTorchMobilePlugin implements FlutterPlugin, MethodCallHandler {
           int height = call.argument("height");
           // Custom mean
           ArrayList<Double> _mean = call.argument("mean");
-          final float [] mean = Convert.toFloatPrimitives(_mean.toArray(new Double[0]));
+          mean = Convert.toFloatPrimitives(_mean.toArray(new Double[0]));
 
           // Custom std
           ArrayList<Double> _std = call.argument("std");
-          final float[] std = Convert.toFloatPrimitives(_std.toArray(new Double[0]));
+          std = Convert.toFloatPrimitives(_std.toArray(new Double[0]));
           
           
 

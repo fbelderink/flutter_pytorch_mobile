@@ -17,3 +17,7 @@
 ## 0.1.0
 
 * iOS compability and bugfixes
+
+## 0.2.0
+
+* Null safety, bugfixes and PyTorch version update

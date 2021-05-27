@@ -14,9 +14,9 @@ class Model {
   Model(this._index);
 
   ///predicts abstract number input
-  Future<List> getPrediction(
+  Future<List?> getPrediction(
       List<double> input, List<int> shape, DType dtype) async {
-    final List prediction = await _channel.invokeListMethod('predict', {
+    final List? prediction = await _channel.invokeListMethod('predict', {
       "index": _index,
       "data": input,
       "shape": shape,
@@ -35,7 +35,7 @@ class Model {
     assert(std.length == 3, "STD should have size of 3");
     List<String> labels = await _getLabels(labelPath);
     List byteArray = image.readAsBytesSync();
-    final List prediction = await _channel.invokeListMethod("predictImage", {
+    final List? prediction = await _channel.invokeListMethod("predictImage", {
       "index": _index,
       "image": byteArray,
       "width": width,
@@ -45,7 +45,7 @@ class Model {
     });
     double maxScore = double.negativeInfinity;
     int maxScoreIndex = -1;
-    for (int i = 0; i < prediction.length; i++) {
+    for (int i = 0; i < prediction!.length; i++) {
       if (prediction[i] > maxScore) {
         maxScore = prediction[i];
         maxScoreIndex = i;
@@ -55,13 +55,13 @@ class Model {
   }
 
   ///predicts image but returns the raw net output
-  Future<List> getImagePredictionList(File image, int width, int height,
+  Future<List?> getImagePredictionList(File image, int width, int height,
       {List<double> mean = TORCHVISION_NORM_MEAN_RGB,
       List<double> std = TORCHVISION_NORM_STD_RGB}) async {
     // Assert mean std
     assert(mean.length == 3, "Mean should have size of 3");
     assert(std.length == 3, "STD should have size of 3");
-    final List prediction = await _channel.invokeListMethod("predictImage", {
+    final List? prediction = await _channel.invokeListMethod("predictImage", {
       "index": _index,
       "image": image.readAsBytesSync(),
       "width": width,

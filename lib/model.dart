@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:pytorch_mobile/enums/dtype.dart';
 
+const TORCHVISION_NORM_MEAN_RGB = [0.485, 0.456, 0.406];
+const TORCHVISION_NORM_STD_RGB = [0.229, 0.224, 0.225];
+
 class Model {
   static const MethodChannel _channel = const MethodChannel('pytorch_mobile');
 
@@ -24,14 +27,21 @@ class Model {
 
   ///predicts image and returns the supposed label belonging to it
   Future<String> getImagePrediction(
-      File image, int width, int height, String labelPath) async {
+      File image, int width, int height, String labelPath,
+      {List<double> mean = TORCHVISION_NORM_MEAN_RGB,
+      List<double> std = TORCHVISION_NORM_STD_RGB}) async {
+    // Assert mean std
+    assert(mean.length == 3, "Mean should have size of 3");
+    assert(std.length == 3, "STD should have size of 3");
     List<String> labels = await _getLabels(labelPath);
     List byteArray = image.readAsBytesSync();
     final List prediction = await _channel.invokeListMethod("predictImage", {
       "index": _index,
       "image": byteArray,
       "width": width,
-      "height": height
+      "height": height,
+      "mean": mean,
+      "std": std
     });
     double maxScore = double.negativeInfinity;
     int maxScoreIndex = -1;
@@ -45,9 +55,20 @@ class Model {
   }
 
   ///predicts image but returns the raw net output
-  Future<List> getImagePredictionList(File image, int width, int height) async {
-    final List prediction = await _channel.invokeListMethod("predictImage",
-        {"index": _index, "image": image.readAsBytesSync(), "width": width, "height": height});
+  Future<List> getImagePredictionList(File image, int width, int height,
+      {List<double> mean = TORCHVISION_NORM_MEAN_RGB,
+      List<double> std = TORCHVISION_NORM_STD_RGB}) async {
+    // Assert mean std
+    assert(mean.length == 3, "Mean should have size of 3");
+    assert(std.length == 3, "STD should have size of 3");
+    final List prediction = await _channel.invokeListMethod("predictImage", {
+      "index": _index,
+      "image": image.readAsBytesSync(),
+      "width": width,
+      "height": height,
+      "mean": mean,
+      "std": std
+    });
     return prediction;
   }
 

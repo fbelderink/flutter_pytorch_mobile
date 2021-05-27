@@ -107,6 +107,15 @@ public class PyTorchMobilePlugin implements FlutterPlugin, MethodCallHandler {
           byte[] imageData = call.argument("image");
           int width = call.argument("width");
           int height = call.argument("height");
+          // Custom mean
+          ArrayList<Double> _mean = call.argument("mean");
+          final float [] mean = Convert.toFloatPrimitives(_mean.toArray(new Double[0]));
+
+          // Custom std
+          ArrayList<Double> _std = call.argument("std");
+          final float[] std = Convert.toFloatPrimitives(_std.toArray(new Double[0]));
+          
+          
 
           imageModule = modules.get(index);
 
@@ -119,7 +128,7 @@ public class PyTorchMobilePlugin implements FlutterPlugin, MethodCallHandler {
         }
 
         final Tensor imageInputTensor = TensorImageUtils.bitmapToFloat32Tensor(bitmap,
-                TensorImageUtils.TORCHVISION_NORM_MEAN_RGB, TensorImageUtils.TORCHVISION_NORM_STD_RGB);
+                mean, std);
 
         final Tensor imageOutputTensor = imageModule.forward(IValue.from(imageInputTensor)).toTensor();
 

@@ -116,8 +116,6 @@ public class PyTorchMobilePlugin implements FlutterPlugin, MethodCallHandler {
           // Custom std
           ArrayList<Double> _std = call.argument("std");
           std = Convert.toFloatPrimitives(_std.toArray(new Double[0]));
-          
-          
 
           imageModule = modules.get(index);
 

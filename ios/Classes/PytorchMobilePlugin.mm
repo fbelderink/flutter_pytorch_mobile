@@ -71,6 +71,9 @@ NSMutableArray *modules = [[NSMutableArray alloc] init];
             float* input;
             int width;
             int height;
+            NSArray<NSNumber*>* mean;
+            NSArray<NSNumber*>* std;
+
             try {
                 int index = [call.arguments[@"index"] intValue];
                 imageModule = modules[index];
@@ -78,11 +81,16 @@ NSMutableArray *modules = [[NSMutableArray alloc] init];
                 FlutterStandardTypedData *imageData = call.arguments[@"image"];
                 width = [call.arguments[@"width"] intValue];
                 height = [call.arguments[@"height"] intValue];
+                // Custom mean
+                mean = call.arguments[@"mean"];
+                // Custom std
+                std = call.arguments[@"std"];
+
                 
                 UIImage *image = [UIImage imageWithData: imageData.data];
                 image = [UIImageExtension resize:image toWidth:width toHeight:height];
                 
-                input = [UIImageExtension normalize:image];
+                input = [UIImageExtension normalize:image mean:mean std:std];
             } catch (const std::exception& e) {
                 NSLog(@"PyTorchMobile: error reading image!\n%s", e.what());
             }

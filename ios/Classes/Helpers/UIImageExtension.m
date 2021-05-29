@@ -12,7 +12,7 @@
 	return newImage;
 }
 
-+ (nullable float*)normalize:(UIImage*)image{
++ (nullable float*)normalize:(UIImage*)image mean:(NSArray<NSNumber*>*) std:(NSArray<NSNumber*>*) {
     CGImageRef cgImage = [image CGImage];
     NSUInteger w = CGImageGetWidth(cgImage);
     NSUInteger h = CGImageGetHeight(cgImage);
@@ -37,9 +37,9 @@
 	
     float* normalizedBuffer = malloc(3*h*w * sizeof(float));
     for(int i = 0; i < (w*h); i++) {
-        normalizedBuffer[i] = (rawBytes[i * 4 + 0] / 255.0 - 0.485) / 0.229;
-        normalizedBuffer[w * h + i] = (rawBytes[i * 4 + 1] / 255.0 - 0.456) / 0.224;
-        normalizedBuffer[w * h * 2 + i] = (rawBytes[i * 4 + 2] / 255.0 - 0.406) / 0.225;	
+        normalizedBuffer[i] = (rawBytes[i * 4 + 0] / 255.0 - mean[0]) / std[0];
+        normalizedBuffer[w * h + i] = (rawBytes[i * 4 + 1] / 255.0 - mean[1]) / std[1];
+        normalizedBuffer[w * h * 2 + i] = (rawBytes[i * 4 + 2] / 255.0 - mean[2]) / std[2];	
     }
     
     return normalizedBuffer;

@@ -53,5 +53,13 @@ String prediction = await _imageModel
         .getImagePrediction(image, 224, 224, "assets/labels/labels.csv");
 ```
 
+### Image prediction for an image with custom mean and std
+```dart
+final mean = [0.5, 0.5, 0.5];
+final std = [0.5, 0.5, 0.5];
+String prediction = await _imageModel
+        .getImagePrediction(image, 224, 224, "assets/labels/labels.csv", mean: mean, std: std);
+```
+
 ## Contact
 fynnmaarten.business@gmail.com

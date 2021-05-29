@@ -2,16 +2,16 @@ PODS:
   - Flutter (1.0.0)
   - image_picker (0.0.1):
     - Flutter
-  - LibTorch (1.6.1):
-    - LibTorch/Core (= 1.6.1)
-  - LibTorch/Core (1.6.1):
+  - LibTorch (1.8.0):
+    - LibTorch/Core (= 1.8.0)
+  - LibTorch/Core (1.8.0):
     - LibTorch/Torch
-  - LibTorch/Torch (1.6.1)
+  - LibTorch/Torch (1.8.0)
   - path_provider (0.0.1):
     - Flutter
   - pytorch_mobile (0.0.1):
     - Flutter
-    - LibTorch (~> 1.6.0)
+    - LibTorch (~> 1.8.0)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
@@ -34,12 +34,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/pytorch_mobile/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  image_picker: e3eacd46b94694dde7cf2705955cece853aa1a8f
-  LibTorch: 32a83630ab5b4505f205c7e332975a2d3d6e0c55
-  path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
-  pytorch_mobile: 22fd3005ff24695fbea6d0aa79f0a2a8edfb5152
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  image_picker: 50e7c7ff960e5f58faa4d1f4af84a771c671bc4a
+  LibTorch: d7724112589515bedd5eadf14a9db5b1d62d8a34
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  pytorch_mobile: cdb1566b9883c59662d443e904db6674e829dd84
 
-PODFILE CHECKSUM: cf0c950f7e9a456b4e325f5b8fc0f98906a3705a
+PODFILE CHECKSUM: d9646c0250b6c86682c69a86e40f54c636c64ae4
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.10.1

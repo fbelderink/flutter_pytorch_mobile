@@ -3,7 +3,7 @@
 #import "UIImageExtension.h"
 #import <LibTorch/LibTorch.h>
 
-@implementation PytorchMobilePlugin
+@implementation PyTorchMobilePlugin
 
 NSMutableArray *modules = [[NSMutableArray alloc] init];
 
@@ -11,7 +11,7 @@ NSMutableArray *modules = [[NSMutableArray alloc] init];
     FlutterMethodChannel* channel = [FlutterMethodChannel
                                      methodChannelWithName:@"pytorch_mobile"
                                      binaryMessenger:[registrar messenger]];
-    PytorchMobilePlugin* instance = [[PytorchMobilePlugin alloc] init];
+    PyTorchMobilePlugin* instance = [[PyTorchMobilePlugin alloc] init];
     [registrar addMethodCallDelegate:instance channel:channel];
 }
 
@@ -90,7 +90,7 @@ NSMutableArray *modules = [[NSMutableArray alloc] init];
                 UIImage *image = [UIImage imageWithData: imageData.data];
                 image = [UIImageExtension resize:image toWidth:width toHeight:height];
                 
-                input = [UIImageExtension normalize:image mean:mean std:std];
+                input = [UIImageExtension normalize:image withMean:mean withSTD:std];
             } catch (const std::exception& e) {
                 NSLog(@"PyTorchMobile: error reading image!\n%s", e.what());
             }

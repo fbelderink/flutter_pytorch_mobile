@@ -211,8 +211,7 @@ public class PyTorchMobilePlugin implements FlutterPlugin, MethodCallHandler {
 
     final Tensor imageInputTensor = TensorImageUtils.bitmapToFloat32Tensor(bitmap,
             mean, std);
-    IValue[] outputTuple = imageModule.forward(IValue.from(imageInputTensor)).toTuple();
-    final Map<String, IValue> map = outputTuple[1].toList()[0].toDictStringKey();
+    final Map<String, IValue> map = imageModule.forward(IValue.from(imageInputTensor)).toDictStringKey();
     
     // Return list
     List< List<Float> > out = new ArrayList<>();

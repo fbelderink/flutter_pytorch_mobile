@@ -61,5 +61,15 @@ String prediction = await _imageModel
         .getImagePrediction(image, 224, 224, "assets/labels/labels.csv", mean: mean, std: std);
 ```
 
+### Detectron2 model [only detection]
+```dart
+List<List>? prediction = await _d2model
+        .detectron2(image, 320, 320, "assets/labels/d2go.csv", minScore: 0.4);
+
+// prediction[0] => [left, top, right, bottom, score, label]
+```
+
+#### Detectron2 model is generated with [d2go](https://github.com/facebookresearch/d2go), using [script](create_d2go.py)
+
 ## Contact
 fynnmaarten.business@gmail.com

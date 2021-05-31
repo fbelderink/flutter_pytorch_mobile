@@ -23,6 +23,8 @@ import com.facebook.soloader.nativeloader.NativeLoader;
 import com.facebook.soloader.nativeloader.SystemDelegate;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /** TorchMobilePlugin */
 public class PyTorchMobilePlugin implements FlutterPlugin, MethodCallHandler {
@@ -53,102 +55,197 @@ public class PyTorchMobilePlugin implements FlutterPlugin, MethodCallHandler {
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
     switch (call.method){
       case "loadModel":
-        try {
-          String absPath = call.argument("absPath");
-          modules.add(Module.load(absPath));
-          result.success(modules.size() - 1);
-        } catch (Exception e) {
-          String assetPath = call.argument("assetPath");
-          Log.e("PyTorchMobile", assetPath + " is not a proper model", e);
-        }
+        loadModel(call, result);
         break;
+
       case "predict":
-        Module module = null;
-        Integer[] shape = null;
-        Double[] data = null;
-        DType dtype = null;
-
-        try{
-          int index = call.argument("index");
-          module = modules.get(index);
-
-          dtype = DType.valueOf(call.argument("dtype").toString().toUpperCase());
-
-          ArrayList<Integer> shapeList = call.argument("shape");
-          shape = shapeList.toArray(new Integer[shapeList.size()]);
-
-          ArrayList<Double> dataList = call.argument("data");
-          data = dataList.toArray(new Double[dataList.size()]);
-
-        }catch(Exception e){
-          Log.e("PyTorchMobile", "error parsing arguments", e);
-        }
-
-        //prepare input tensor
-        final Tensor inputTensor = getInputTensor(dtype, data, shape);
-
-        //run model
-        Tensor outputTensor = null;
-        try {
-          outputTensor = module.forward(IValue.from(inputTensor)).toTensor();
-        }catch(RuntimeException e){
-          Log.e("PyTorchMobile", "Your input type " + dtype.toString().toLowerCase()  + " (" + Convert.dtypeAsPrimitive(dtype.toString()) +") " + "does not match with model input type",e);
-          result.success(null);
-        }
-
-        successResult(result, dtype, outputTensor);
-
+        predict(call, result);
         break;
+
       case "predictImage":
-        Module imageModule = null;
-        Bitmap bitmap = null;
-        float [] mean = null;
-        float [] std = null;
-        try {
-          int index = call.argument("index");
-          byte[] imageData = call.argument("image");
-          int width = call.argument("width");
-          int height = call.argument("height");
-          // Custom mean
-          ArrayList<Double> _mean = call.argument("mean");
-          mean = Convert.toFloatPrimitives(_mean.toArray(new Double[0]));
-
-          // Custom std
-          ArrayList<Double> _std = call.argument("std");
-          std = Convert.toFloatPrimitives(_std.toArray(new Double[0]));
-          
-          
-
-          imageModule = modules.get(index);
-
-          bitmap = BitmapFactory.decodeByteArray(imageData,0,imageData.length);
-
-          bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
-
-        }catch (Exception e){
-          Log.e("PyTorchMobile", "error reading image", e);
-        }
-
-        final Tensor imageInputTensor = TensorImageUtils.bitmapToFloat32Tensor(bitmap,
-                mean, std);
-
-        final Tensor imageOutputTensor = imageModule.forward(IValue.from(imageInputTensor)).toTensor();
-
-        float[] scores = imageOutputTensor.getDataAsFloatArray();
-
-        ArrayList<Float> out = new ArrayList<>();
-        for(float f : scores){
-          out.add(f);
-        }
-
-        result.success(out);
-
+        predictImage(call, result);
         break;
+      
+      // Detectron2
+      case "detectron2":
+        detectron2(call, result);
+        break;
+
       default:
         result.notImplemented();
         break;
     }
   }
+
+  // Functions
+  private void loadModel(@NonNull MethodCall call, @NonNull Result result)
+  {
+    try {
+      String absPath = call.argument("absPath");
+      modules.add(Module.load(absPath));
+      result.success(modules.size() - 1);
+    } catch (Exception e) {
+      String assetPath = call.argument("assetPath");
+      Log.e("PyTorchMobile", assetPath + " is not a proper model", e);
+    }
+  }
+
+  private void predict(@NonNull MethodCall call, @NonNull Result result)
+  {
+    Module module = null;
+    Integer[] shape = null;
+    Double[] data = null;
+    DType dtype = null;
+
+    try{
+      int index = call.argument("index");
+      module = modules.get(index);
+
+      dtype = DType.valueOf(call.argument("dtype").toString().toUpperCase());
+
+      ArrayList<Integer> shapeList = call.argument("shape");
+      shape = shapeList.toArray(new Integer[shapeList.size()]);
+
+      ArrayList<Double> dataList = call.argument("data");
+      data = dataList.toArray(new Double[dataList.size()]);
+
+    }catch(Exception e){
+      Log.e("PyTorchMobile", "error parsing arguments", e);
+    }
+
+    //prepare input tensor
+    final Tensor inputTensor = getInputTensor(dtype, data, shape);
+
+    //run model
+    Tensor outputTensor = null;
+    try {
+      outputTensor = module.forward(IValue.from(inputTensor)).toTensor();
+    }catch(RuntimeException e){
+      Log.e("PyTorchMobile", "Your input type " + dtype.toString().toLowerCase()  + " (" + Convert.dtypeAsPrimitive(dtype.toString()) +") " + "does not match with model input type",e);
+      result.success(null);
+    }
+
+    successResult(result, dtype, outputTensor);
+
+  }
+
+  private void predictImage(@NonNull MethodCall call, @NonNull Result result)
+  {
+    Module imageModule = null;
+    Bitmap bitmap = null;
+    float [] mean = null;
+    float [] std = null;
+    try {
+      int index = call.argument("index");
+      byte[] imageData = call.argument("image");
+      int width = call.argument("width");
+      int height = call.argument("height");
+      // Custom mean
+      ArrayList<Double> _mean = call.argument("mean");
+      mean = Convert.toFloatPrimitives(_mean.toArray(new Double[0]));
+
+      // Custom std
+      ArrayList<Double> _std = call.argument("std");
+      std = Convert.toFloatPrimitives(_std.toArray(new Double[0]));
+      
+      
+
+      imageModule = modules.get(index);
+
+      bitmap = BitmapFactory.decodeByteArray(imageData,0,imageData.length);
+
+      bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+
+    }catch (Exception e){
+      Log.e("PyTorchMobile", "error reading image", e);
+    }
+
+    final Tensor imageInputTensor = TensorImageUtils.bitmapToFloat32Tensor(bitmap,
+            mean, std);
+
+    final Tensor imageOutputTensor = imageModule.forward(IValue.from(imageInputTensor)).toTensor();
+
+    float[] scores = imageOutputTensor.getDataAsFloatArray();
+
+    ArrayList<Float> out = new ArrayList<>();
+    for(float f : scores){
+      out.add(f);
+    }
+
+    result.success(out);
+
+  }
+  private void detectron2(@NonNull MethodCall call, @NonNull Result result)
+  {
+    Module imageModule = null;
+    Bitmap bitmap = null;
+    float [] mean = null;
+    float [] std = null;
+    double minScore = 0.0;
+    int width = 640;
+    int height = 640;
+    try {
+      int index = call.argument("index");
+      byte[] imageData = call.argument("image");
+      width = call.argument("width");
+      height = call.argument("height");
+      // Custom mean
+      ArrayList<Double> _mean = call.argument("mean");
+      mean = Convert.toFloatPrimitives(_mean.toArray(new Double[0]));
+
+      // Custom std
+      ArrayList<Double> _std = call.argument("std");
+      std = Convert.toFloatPrimitives(_std.toArray(new Double[0]));
+      
+      minScore = call.argument("minScore");
+
+      imageModule = modules.get(index);
+
+      bitmap = BitmapFactory.decodeByteArray(imageData,0,imageData.length);
+
+      bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+
+    }catch (Exception e){
+      Log.e("PyTorchMobile", "error reading image", e);
+    }
+
+    final Tensor imageInputTensor = TensorImageUtils.bitmapToFloat32Tensor(bitmap,
+            mean, std);
+    IValue[] outputTuple = imageModule.forward(IValue.from(imageInputTensor)).toTuple();
+    final Map<String, IValue> map = outputTuple[1].toList()[0].toDictStringKey();
+    
+    // Return list
+    List< List<Float> > out = new ArrayList<>();
+
+    final Tensor boxesTensor = map.get("boxes").toTensor();
+    final Tensor scoresTensor = map.get("scores").toTensor();
+    final Tensor labelsTensor = map.get("labels").toTensor();
+    float[] boxesData = boxesTensor.getDataAsFloatArray();
+    float[] scoresData = scoresTensor.getDataAsFloatArray();
+    long[] labelsData = labelsTensor.getDataAsLongArray();
+
+    final int n = scoresData.length;
+    for (int i = 0; i < n; i++) {
+        if (scoresData[i] < minScore)
+            continue;
+        
+        List<Float> detection = new ArrayList<>(6);
+
+        detection.add(boxesData[4 * i + 0]); // left
+        detection.add(boxesData[4 * i + 1]); // top
+        detection.add(boxesData[4 * i + 2]); // right
+        detection.add(boxesData[4 * i + 3]); // bottom
+        detection.add(scoresData[i]); // score
+        detection.add((float)(labelsData[i] - 1)); // label
+
+        out.add(detection);
+    }
+
+    result.success(out);
+
+  }
+  // [END] Functions
+
 
   //returns input tensor depending on dtype
   private Tensor getInputTensor(DType dtype, Double[] data, Integer[] shape){

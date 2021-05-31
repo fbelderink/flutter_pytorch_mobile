@@ -16,7 +16,7 @@ NSMutableArray *modules = [[NSMutableArray alloc] init];
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-    NSArray *methods = @[@"loadModel", @"predict", @"predictImage"];
+    NSArray *methods = @[@"loadModel", @"predict", @"predictImage", @"detectron2"];
     int method = (int)[methods indexOfObject:call.method];
     switch(method) {
         case 0:
@@ -96,6 +96,48 @@ NSMutableArray *modules = [[NSMutableArray alloc] init];
             }
             try {
                 NSArray<NSNumber*>* output  = [imageModule predictImage:input withWidth:width andHeight: height];
+                
+                result(output);
+            } catch (const std::exception& e) {
+                NSLog(@"PyTorchMobile: %s", e.what());
+            }
+          
+            break;
+        }
+        case 3:
+        {
+            TorchModule *d2Module;
+            float* input;
+            int width;
+            int height;
+            NSArray<NSNumber*>* mean;
+            NSArray<NSNumber*>* std;
+            float minScore;
+
+            try {
+                int index = [call.arguments[@"index"] intValue];
+                d2Module = modules[index];
+                
+                FlutterStandardTypedData *imageData = call.arguments[@"image"];
+                width = [call.arguments[@"width"] intValue];
+                height = [call.arguments[@"height"] intValue];
+                // Custom mean
+                mean = call.arguments[@"mean"];
+                // Custom std
+                std = call.arguments[@"std"];
+
+                minScore = [call.arguments[@"minScore"] floatValue];
+
+                
+                UIImage *image = [UIImage imageWithData: imageData.data];
+                image = [UIImageExtension resize:image toWidth:width toHeight:height];
+                
+                input = [UIImageExtension normalize:image withMean:mean withSTD:std];
+            } catch (const std::exception& e) {
+                NSLog(@"PyTorchMobile: error reading image!\n%s", e.what());
+            }
+            try {
+                NSMutableArray<NSArray<NSNumber* >* output  = [d2Module detectron2:input withWidth:width withHeight: height withMinScore minScore];
                 
                 result(output);
             } catch (const std::exception& e) {

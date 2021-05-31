@@ -31,8 +31,9 @@ class Model {
       {List<double> mean = TORCHVISION_NORM_MEAN_RGB,
       List<double> std = TORCHVISION_NORM_STD_RGB}) async {
     // Assert mean std
-    assert(mean.length == 3, "Mean should have size of 3");
-    assert(std.length == 3, "STD should have size of 3");
+    assert(mean.length == 3, "mean should have size of 3");
+    assert(std.length == 3, "std should have size of 3");
+
     List<String> labels = await _getLabels(labelPath);
     List byteArray = image.readAsBytesSync();
     final List? prediction = await _channel.invokeListMethod("predictImage", {

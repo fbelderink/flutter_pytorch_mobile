@@ -21,3 +21,7 @@
 ## 0.2.0
 
 * Null safety, bugfixes and PyTorch version update
+
+## 0.2.1
+
+* Custom mean and std

@@ -51,7 +51,7 @@
     }
     return nil;
 }
-- (NSArray<NSNumber*>*) detectron2:(void*)imageBuffer withWidth:(int)width withHeight:(int)height withMinScore: (float)minScore {
+- (NSArray<NSArray<NSNumber*>* >*) detectron2:(void*)imageBuffer withWidth:(int)width withHeight:(int)height withMinScore: (float)minScore {
     try {
         at::Tensor tensor = torch::from_blob(imageBuffer, {1, 3, height, width}, at::kFloat);
         torch::autograd::AutoGradMode guard(false);
@@ -64,7 +64,7 @@
         const float* scores = outputDict.at("scores").toTensor().data_ptr<float>();
         const long* labels = outputDict.at("labels").toTensor().data_ptr<long>();
 
-        NSMutableArray<NSArray<NSNumber* >* results = [[NSMutableArray<NSArray<NSNumber* > alloc] init];
+        NSMutableArray<NSArray<NSNumber*>* >* results = [[NSMutableArray<NSArray<NSNumber*>* > alloc] init];
         for (int i = 0; i < prod; i++) {
             if(scores[i] < minScore)
                 continue;

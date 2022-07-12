@@ -1,8 +1,6 @@
 # pytorch_mobile
 
-A flutter plugin for pytorch model inference.
-Since this is still being developed, the plugin is only supported for Android.
-An iOS version is going to come soon
+A flutter plugin for pytorch model inference, supported both for Android and iOS.
 
 ## Usage
 

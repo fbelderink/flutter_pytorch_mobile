@@ -25,3 +25,7 @@
 ## 0.2.1
 
 * Custom mean and std
+
+## 0.2.2
+
+* Updated readme

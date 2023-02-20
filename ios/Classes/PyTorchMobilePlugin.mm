@@ -101,6 +101,8 @@ NSMutableArray *modules = [[NSMutableArray alloc] init];
             } catch (const std::exception& e) {
                 NSLog(@"PyTorchMobile: %s", e.what());
             }
+
+            free(input);
           
             break;
         }
